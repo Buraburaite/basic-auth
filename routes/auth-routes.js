@@ -12,6 +12,13 @@ authRoutes.post('/signup', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
+  if ([username, password].includes('')) {
+    res.render('auth/signup-view.ejs', {
+      errorMessage : 'Please fill out both username and password foo\'!'
+    });
+    return;
+  }
+
   User.findOne({ username: username }, { username: 1 }, (err, foundUser) => {
     if (err) {
       next(err);
