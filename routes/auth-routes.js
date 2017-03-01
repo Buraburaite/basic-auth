@@ -50,7 +50,38 @@ authRoutes.post('/signup', (req, res, next) => {
 });
 
 authRoutes.get('/login', (req, res, next) => {
-  res.render('auth/login-view');
+  res.render('auth/login');
+});
+
+authRoutes.post('/login', (req, res, next) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  if ([username, password].includes('')) {
+    res.render('auth/login', {
+      errorMessage: 'Indicate a username and password to log in.'
+    });
+    return;
+  }
+
+  User.findOne({ username: username }, (err, user) => {
+    if (err) {
+      next(err);
+      return;
+    }
+
+    if (!user) {
+      res.render('auth/login', {
+        errorMessage: 'The username doesn\'t exist'
+      });
+      return;
+    }
+
+    if (bcrypt.compareSync(password, user.password)) {
+      req.session.currentUser = user;
+      res.redirect('/');
+    }
+  });
 });
 
 module.exports = authRoutes;
