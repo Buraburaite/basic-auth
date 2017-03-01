@@ -81,7 +81,17 @@ authRoutes.post('/login', (req, res, next) => {
       req.session.currentUser = user;
       res.redirect('/');
     }
+    else {
+      res.render('auth/login', {
+        errorMessage: 'Incorrect password'
+      });
+    }
   });
+});
+
+authRoutes.get('/logout', (req, res, next) => {
+  req.session.destroy();
+  res.redirect('/');
 });
 
 module.exports = authRoutes;

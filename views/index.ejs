@@ -2,7 +2,13 @@
 <p>Welcome to <%= title %></p>
 
 <ul>
-  <li> <a href="/signup">Sign up</a> </li>
-  <li> <a href="/login">Login</a> </li>
-  <li> <a href="/secret">Protected page (requires authentication)</a> </li>
-</ul>
+  <% if (loggedUser) { %>
+    Hello, <%= loggedUser.username %>
+    <li> <a href="/logout">Logout</a> </li>
+    
+    <% } else { %>
+      <li> <a href="/signup">Sign up</a> </li>
+      <li> <a href="/login">Login</a> </li>
+      <li> <a href="/secret">Protected page (requires authentication)</a> </li>
+      <% } %>
+    </ul>
